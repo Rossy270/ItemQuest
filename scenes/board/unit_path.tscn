@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://da68yq5bufel"]
+
+[ext_resource type="Texture2D" uid="uid://dvl7qxej66bhg" path="res://assets/placeholder/highlight_tile.png" id="1_oy40u"]
+[ext_resource type="Script" path="res://scripts/grid/unit_path.gd" id="1_syddj"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_dh5ah"]
+texture = ExtResource("1_oy40u")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_pkcn8"]
+tile_size = Vector2i(32, 32)
+sources/0 = SubResource("TileSetAtlasSource_dh5ah")
+
+[node name="UnitPath" type="TileMapLayer"]
+self_modulate = Color(1, 0.242287, 0.742032, 1)
+tile_set = SubResource("TileSet_pkcn8")
+script = ExtResource("1_syddj")

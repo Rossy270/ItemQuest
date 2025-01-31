@@ -1,0 +1,29 @@
+[gd_scene load_steps=7 format=3 uid="uid://4h460bne5u7f"]
+
+[ext_resource type="PackedScene" uid="uid://dlr4otqmnons0" path="res://scenes/maps/simple_map.tscn" id="1_8plcj"]
+[ext_resource type="Script" path="res://scripts/grid/game_board.gd" id="1_vh31t"]
+[ext_resource type="PackedScene" uid="uid://do7s2uku0pow8" path="res://scenes/board/unit_overlay.tscn" id="1_vr0ko"]
+[ext_resource type="PackedScene" uid="uid://tbrhyctmhvp8" path="res://scenes/cursor/cursor.tscn" id="2_gmj3x"]
+[ext_resource type="PackedScene" uid="uid://da68yq5bufel" path="res://scenes/board/unit_path.tscn" id="3_0mccx"]
+[ext_resource type="PackedScene" uid="uid://ddte67lcaqx7h" path="res://scenes/units/unit.tscn" id="3_b3en6"]
+
+[node name="Game" type="Node2D"]
+
+[node name="GameBoard" type="Node2D" parent="."]
+script = ExtResource("1_vh31t")
+
+[node name="SimpleMap" parent="GameBoard" instance=ExtResource("1_8plcj")]
+
+[node name="UnitOverlay" parent="GameBoard" instance=ExtResource("1_vr0ko")]
+
+[node name="UnitPath" parent="GameBoard" instance=ExtResource("3_0mccx")]
+
+[node name="Cursor" parent="GameBoard" instance=ExtResource("2_gmj3x")]
+
+[node name="Unit" parent="GameBoard" instance=ExtResource("3_b3en6")]
+position = Vector2(210, 105)
+move_range = 2
+
+[node name="Unit2" parent="GameBoard" instance=ExtResource("3_b3en6")]
+position = Vector2(239, 105)
+move_range = 2

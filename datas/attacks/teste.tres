@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AttackInfo" load_steps=2 format=3 uid="uid://cdo5be0w2k463"]
+
+[ext_resource type="Script" path="res://scripts/attack_system/attack_info.gd" id="1_5fie0"]
+
+[resource]
+script = ExtResource("1_5fie0")
+attack_range = 2
+attack_pattern = 5
+attack_damage = 1

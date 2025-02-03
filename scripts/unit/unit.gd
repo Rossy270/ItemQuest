@@ -1,10 +1,21 @@
 extends Path2D
 class_name Unit
 
+signal health_changed
+signal attack_finished
 signal walk_finished
+signal unit_death(cell: Vector2i)
 
 @export var move_range := 6
 @export var move_speed := 200.0
+@export var health := 10:
+	set(value):
+		health = value
+		health_changed.emit(health)
+		if health <= 0:
+			unit_death.emit(cell)
+			queue_free()
+@export var attacks: Array[AttackInfo]
 
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 @onready var texture: Sprite2D = $PathFollow2D/Texture
@@ -64,3 +75,16 @@ func walk_along(path: PackedVector2Array) -> void:
 	
 	cell = path[-1]
 	_is_walking = true
+
+
+func get_attack_info() -> AttackInfo:
+	return attacks[0]
+
+
+func take_damage(amount: int) -> void:
+	if amount > 0:
+		health -= amount
+
+
+func attack_execute(unit: Unit, damage: int) -> void:
+	unit.take_damage(damage)

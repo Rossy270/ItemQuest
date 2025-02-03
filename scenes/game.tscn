@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://4h460bne5u7f"]
+[gd_scene load_steps=14 format=3 uid="uid://4h460bne5u7f"]
 
 [ext_resource type="PackedScene" uid="uid://dlr4otqmnons0" path="res://scenes/maps/simple_map.tscn" id="1_8plcj"]
 [ext_resource type="Script" path="res://scripts/grid/game_board.gd" id="1_vh31t"]
@@ -6,6 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://tbrhyctmhvp8" path="res://scenes/cursor/cursor.tscn" id="2_gmj3x"]
 [ext_resource type="PackedScene" uid="uid://da68yq5bufel" path="res://scenes/board/unit_path.tscn" id="3_0mccx"]
 [ext_resource type="PackedScene" uid="uid://ddte67lcaqx7h" path="res://scenes/units/unit.tscn" id="3_b3en6"]
+[ext_resource type="PackedScene" uid="uid://b0ngvt0074ppc" path="res://scenes/board/attack_range_layer.tscn" id="7_0gr43"]
+[ext_resource type="Script" path="res://scripts/data structure/state_board_machine.gd" id="7_g0h7p"]
+[ext_resource type="Script" path="res://scripts/attack_system/attack_info.gd" id="7_kojhc"]
+[ext_resource type="Script" path="res://scripts/states/move_state.gd" id="8_o0qin"]
+[ext_resource type="Resource" uid="uid://cdo5be0w2k463" path="res://datas/attacks/teste.tres" id="8_ymnkc"]
+[ext_resource type="Script" path="res://scripts/grid/attack_range_layer.gd" id="10_6edya"]
+[ext_resource type="Script" path="res://scripts/states/attack_state.gd" id="13_e05yy"]
 
 [node name="Game" type="Node2D"]
 
@@ -18,12 +25,30 @@ script = ExtResource("1_vh31t")
 
 [node name="UnitPath" parent="GameBoard" instance=ExtResource("3_0mccx")]
 
+[node name="AttackRangeLayer" parent="GameBoard" instance=ExtResource("7_0gr43")]
+script = ExtResource("10_6edya")
+
 [node name="Cursor" parent="GameBoard" instance=ExtResource("2_gmj3x")]
 
 [node name="Unit" parent="GameBoard" instance=ExtResource("3_b3en6")]
 position = Vector2(210, 105)
 move_range = 2
+health = 1
+attacks = Array[ExtResource("7_kojhc")]([ExtResource("8_ymnkc")])
 
 [node name="Unit2" parent="GameBoard" instance=ExtResource("3_b3en6")]
 position = Vector2(239, 105)
 move_range = 2
+health = 1
+attacks = Array[ExtResource("7_kojhc")]([ExtResource("8_ymnkc")])
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("board", "initial_state")]
+script = ExtResource("7_g0h7p")
+board = NodePath("../GameBoard")
+initial_state = NodePath("MoveState")
+
+[node name="MoveState" type="Node" parent="StateMachine"]
+script = ExtResource("8_o0qin")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("13_e05yy")

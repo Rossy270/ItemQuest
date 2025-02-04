@@ -19,6 +19,7 @@ signal unit_death(cell: Vector2i)
 
 @onready var _path_follow: PathFollow2D = $PathFollow2D
 @onready var texture: Sprite2D = $PathFollow2D/Texture
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 var cell := Vector2i.ZERO:
 	set(value):
@@ -26,11 +27,14 @@ var cell := Vector2i.ZERO:
 var is_selected := false:
 	set(value):
 		is_selected = value
+		if is_selected:
+			_animation_select_unit()
 var _is_walking := false:
 	set(value):
 		_is_walking = value
 		set_process(_is_walking)
 var previous_pos : Vector2
+var is_hover := false
 
 func _ready() -> void:
 	set_process(false)
@@ -88,3 +92,23 @@ func take_damage(amount: int) -> void:
 
 func attack_execute(unit: Unit, damage: int) -> void:
 	unit.take_damage(damage)
+	attack_finished.emit()
+
+
+func hover() -> void:
+	is_hover = true
+	animation_player.play("hover")
+
+
+func dishover() -> void:
+	is_hover = false
+	animation_player.play_backwards("hover")
+
+
+func _animation_select_unit() -> void:
+	if is_hover:
+		dishover()
+		await animation_player.animation_finished
+		animation_player.play("select")
+	else:
+		animation_player.play("select")

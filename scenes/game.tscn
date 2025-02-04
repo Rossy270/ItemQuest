@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://4h460bne5u7f"]
+[gd_scene load_steps=17 format=3 uid="uid://4h460bne5u7f"]
 
 [ext_resource type="PackedScene" uid="uid://dlr4otqmnons0" path="res://scenes/maps/simple_map.tscn" id="1_8plcj"]
 [ext_resource type="Script" path="res://scripts/grid/game_board.gd" id="1_vh31t"]
@@ -12,7 +12,10 @@
 [ext_resource type="Script" path="res://scripts/states/move_state.gd" id="8_o0qin"]
 [ext_resource type="Resource" uid="uid://cdo5be0w2k463" path="res://datas/attacks/teste.tres" id="8_ymnkc"]
 [ext_resource type="Script" path="res://scripts/grid/attack_range_layer.gd" id="10_6edya"]
+[ext_resource type="Script" path="res://scripts/states/option_action_state.gd" id="12_gitay"]
+[ext_resource type="Script" path="res://scripts/states/select_unit.gd" id="12_mpmtw"]
 [ext_resource type="Script" path="res://scripts/states/attack_state.gd" id="13_e05yy"]
+[ext_resource type="Script" path="res://scripts/data structure/board_state.gd" id="14_6cpnq"]
 
 [node name="Game" type="Node2D"]
 
@@ -45,10 +48,19 @@ attacks = Array[ExtResource("7_kojhc")]([ExtResource("8_ymnkc")])
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("board", "initial_state")]
 script = ExtResource("7_g0h7p")
 board = NodePath("../GameBoard")
-initial_state = NodePath("MoveState")
+initial_state = NodePath("SelectUnit")
 
-[node name="MoveState" type="Node" parent="StateMachine"]
+[node name="SelectUnit" type="Node" parent="StateMachine"]
+script = ExtResource("12_mpmtw")
+
+[node name="OptionActionState" type="Node" parent="StateMachine"]
+script = ExtResource("12_gitay")
+
+[node name="MoveState" type="Node" parent="StateMachine/OptionActionState"]
 script = ExtResource("8_o0qin")
 
-[node name="AttackState" type="Node" parent="StateMachine"]
+[node name="AttackState" type="Node" parent="StateMachine/OptionActionState"]
 script = ExtResource("13_e05yy")
+
+[node name="ConclusionActionState" type="Node" parent="StateMachine/OptionActionState"]
+script = ExtResource("14_6cpnq")

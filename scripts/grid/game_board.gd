@@ -85,22 +85,28 @@ func _dijkstra(start: Vector2i, max_distance: int) -> Array:
 
 func select_unit(cell: Vector2i) -> void:
 	if not _units.has(cell):
+		print("estou aqui")
 		return
 	
 	active_unit = _units[cell]
 	active_unit.is_selected = true
 	_walkable_cells = get_walkable_cells(active_unit)
+
+
+func draw_walkable_cells() -> void:
 	_unit_overlay.draw(_walkable_cells)
 	unit_path.initialize(_walkable_cells)
 
 
-func _deselect_active_unit() -> void:
-	active_unit.is_selected = false
+func clear_walkable_cells() -> void:
 	_unit_overlay.clear()
 	unit_path.stop()
 
 
-func _clear_active_unit() -> void:
+func deselect_active_unit() -> void:
+	active_unit.is_selected = false
+
+func clear_active_unit() -> void:
 	active_unit = null
 	_walkable_cells.clear()
 
@@ -111,12 +117,15 @@ func move_active_unit(new_cell: Vector2i) -> void:
 	
 	_units.erase(active_unit.cell)
 	_units[new_cell] = active_unit
-	_deselect_active_unit()
+	clear_walkable_cells()
 	active_unit.walk_along(unit_path.current_path)
 	await active_unit.walk_finished
 	unit_walk_finished.emit(active_unit)
-	_clear_active_unit()
 
 
 func _on_Unit_death(cell: Vector2i) -> void:
 	_units.erase(cell)
+
+
+func get_unit_by_cell(cell: Vector2i) -> Unit:
+	return _units.get(cell, null)
